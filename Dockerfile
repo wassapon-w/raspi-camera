@@ -16,12 +16,14 @@ RUN apt install -y --no-install-recommends python3-pip python3-picamera2 \
     && rm -rf /var/cache/apt/archives/* \
     && rm -rf /var/lib/apt/lists/*
 
-ADD pi_web_streaming.py pi_web_streaming.py
+RUN sed -i 's/geteuid/getppid/' /usr/bin/vlc
+
+ADD app/web-streaming-pi.py web-streaming-pi.py
 
 # WORKDIR /app/
 
-CMD python3 pi_web_streaming.py
+# CMD python3 web-streaming-pi.py
 
-# CMD rpicam-vid -t 0 --inline -o - | cvlc stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8554/stream1}' :demux=h264
+CMD rpicam-vid -t 0 --inline -o - | cvlc stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8554/stream1}' :demux=h264
 
 # CMD libcamera-hello --list-cameras
