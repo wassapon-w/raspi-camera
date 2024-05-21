@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pi-camera-deployment
+  labels:
+    app: pi-camera
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pi-camera
+  template:
+    metadata:
+      labels:
+        app: pi-camera
+    spec:
+      containers:
+      - name: pi-camera
+        image: docker.io/boom10899/pi-camera:latest
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8000
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: camera-path
+          mountPath: /run/udev
+          readOnly: true
+          mountPropagation: None
+          recursiveReadOnly: Enabled
+      volumes:
+      - name: camera-path
+        hostPath:
+          path: /run/udev
