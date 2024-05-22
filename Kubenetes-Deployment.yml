@@ -31,7 +31,15 @@ spec:
           readOnly: true
           mountPropagation: None
           recursiveReadOnly: Enabled
+        - name: hostname
+          mountPath: /etc/host
+          readOnly: true
+          mountPropagation: None
+          recursiveReadOnly: Enabled
       volumes:
       - name: camera-path
         hostPath:
           path: /run/udev
+      - name: hostname
+        hostPath:
+          path: /etc/hostname

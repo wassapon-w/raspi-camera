@@ -9,23 +9,28 @@ import logging
 import socketserver
 from http import server
 from threading import Condition
+import subprocess
 
 from picamera2 import Picamera2
 from picamera2.encoders import JpegEncoder
 from picamera2.outputs import FileOutput
 
-PAGE = """\
+hostname = subprocess.check_output("cat /etc/host", shell=True).decode("utf-8").strip()
+containername = subprocess.check_output("cat /etc/hostname", shell=True).decode("utf-8").strip()
+
+PAGE = f"""\
 <html>
 <head>
 <title>picamera2 MJPEG streaming demo</title>
 </head>
 <body>
 <h1>Picamera2 MJPEG Streaming Demo</h1>
+<h2>Host: {hostname}</h2>
+<h3>Container: {containername}</h3>
 <img src="stream.mjpg" width="640" height="480" />
 </body>
 </html>
 """
-
 
 class StreamingOutput(io.BufferedIOBase):
     def __init__(self):
