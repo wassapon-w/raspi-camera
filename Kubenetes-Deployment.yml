@@ -5,7 +5,7 @@ metadata:
   labels:
     app: pi-camera
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: pi-camera
@@ -43,3 +43,19 @@ spec:
       - name: hostname
         hostPath:
           path: /etc/hostname
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: pi-camera-service
+spec:
+  type: NodePort
+  selector:
+    app: pi-camera
+  ports:
+    - port: 8000
+      targetPort: 8000
+      nodePort: 30080
+      
