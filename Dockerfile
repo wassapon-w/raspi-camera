@@ -7,9 +7,8 @@ RUN echo "deb http://archive.raspberrypi.org/debian/ bookworm main" > /etc/apt/s
 
 RUN apt update && apt -y upgrade
 
-RUN apt install -y --no-install-recommends python3-pip python3-picamera2 \
-    # libcamera-dev libepoxy-dev libjpeg-dev libtiff5-dev libpng-dev \
-    # libavcodec-dev libavdevice-dev libavformat-dev libswresample-dev \
+RUN apt install -y --no-install-recommends \
+    python3-pip python3-picamera2 \
     rpicam-apps vlc \
     && apt-get clean \
     && apt-get autoremove \
@@ -20,10 +19,6 @@ RUN sed -i 's/geteuid/getppid/' /usr/bin/vlc
 
 ADD app/web-streaming-pi.py web-streaming-pi.py
 
-# WORKDIR /app/
-
 CMD python3 web-streaming-pi.py
 
 # CMD rpicam-vid -t 0 --inline -o - | cvlc stream:///dev/stdin --sout '#rtp{sdp=rtsp://:8554/stream1}' :demux=h264
-
-# CMD libcamera-hello --list-cameras
