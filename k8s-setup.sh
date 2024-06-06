@@ -1,7 +1,8 @@
 # sudo -i
 
 # sudo swapoff -a
-sudo dphys-swapfile swapoff
+# sudo dphys-swapfile swapoff
+sudo systemctl disable dphys-swapfile.service
 # sudo cat /etc/fstab
 
 ARCH=amd64
@@ -22,8 +23,10 @@ mkdir -p /opt/cni/bin
 sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-${ARCH}-v1.4.1.tgz
 sudo chown -R root:root /opt/cni/bin
 
-# sudo mkdir /etc/containerd/
-# sudo containerd config default > /etc/containerd/config.toml
+sudo mkdir /etc/containerd/
+sudo bash -c "containerd config default > /etc/containerd/config.toml"
+
+# sudo nano /etc/containerd/config.toml
 ###  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
 ###  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
 ###  SystemdCgroup = true
